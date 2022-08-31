@@ -1,9 +1,11 @@
+import { wei } from '@synthetixio/wei';
 import { atom, selector } from 'recoil';
 
 import { CurrencyKey, CRYPTO_CURRENCY_MAP } from 'constants/currency';
 import { SwapRatio } from 'hooks/useExchange';
 import { localStorageEffect } from 'store/effects';
 import { getExchangeKey } from 'store/utils';
+import { zeroBN } from 'utils/formatters/number';
 
 type CurrencyPair = {
 	base: CurrencyKey | null;
@@ -52,14 +54,32 @@ export const txErrorState = atom<string | null>({
 	default: null,
 });
 
-export const baseCurrencyAmountState = atom<string>({
+export const baseCurrencyAmountState = atom({
 	key: getExchangeKey('baseCurrencyAmount'),
 	default: '',
 });
 
-export const quoteCurrencyAmountState = atom<string>({
+export const quoteCurrencyAmountState = atom({
 	key: getExchangeKey('quoteCurrencyAmount'),
 	default: '',
+});
+
+export const baseCurrencyAmountBNState = selector({
+	key: getExchangeKey('baseCurrencyAmountBN'),
+	get: ({ get }) => {
+		const baseCurrencyAmount = get(baseCurrencyAmountState);
+
+		return baseCurrencyAmount === '' ? zeroBN : wei(baseCurrencyAmount);
+	},
+});
+
+export const quoteCurrencyAmountBNState = selector({
+	key: getExchangeKey('quoteCurrencyAmountBN'),
+	get: ({ get }) => {
+		const quoteCurrencyAmount = get(quoteCurrencyAmountState);
+
+		return quoteCurrencyAmount === '' ? zeroBN : wei(quoteCurrencyAmount);
+	},
 });
 
 export const ratioState = atom<SwapRatio | undefined>({
