@@ -2,6 +2,8 @@ import { NetworkId, NetworkNameById, Synth } from '@synthetixio/contracts-interf
 import { TFunction } from 'i18next';
 import { Dictionary } from 'lodash';
 
+import { DEFAULT_CRYPTO_DECIMALS } from 'constants/defaults';
+
 export const getMarketAsset = (marketKey: FuturesMarketKey) => {
 	return markets[marketKey].asset;
 };
@@ -55,6 +57,9 @@ export const isDecimalFour = (marketKeyOrAsset: string | undefined): boolean =>
 	marketKeyOrAsset === 'DOGE' ||
 	marketKeyOrAsset === 'sDebtRatio' ||
 	marketKeyOrAsset === 'DebtRatio';
+
+export const getMinDecimals = (asset: string) =>
+	isDecimalFour(asset) ? DEFAULT_CRYPTO_DECIMALS : undefined;
 
 export enum FuturesMarketKey {
 	sBTC = 'sBTC',

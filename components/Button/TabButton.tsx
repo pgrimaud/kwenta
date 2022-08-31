@@ -16,17 +16,8 @@ export type TabButtonProps = {
 	nofill?: boolean;
 };
 
-const TabButton: React.FC<TabButtonProps> = ({
-	title,
-	detail,
-	badge,
-	active,
-	icon,
-	vertical,
-	nofill,
-	...props
-}) => {
-	return (
+const TabButton: React.FC<TabButtonProps> = React.memo(
+	({ title, detail, badge, active, icon, vertical, nofill, ...props }) => (
 		<StyledButton {...props} {...{ active, vertical, nofill }} noOutline>
 			{!!icon && <div>{icon}</div>}
 			<div>
@@ -38,8 +29,8 @@ const TabButton: React.FC<TabButtonProps> = ({
 				{detail && <p className="detail">{detail}</p>}
 			</div>
 		</StyledButton>
-	);
-};
+	)
+);
 
 const StyledButton = styled(Button)<{
 	active?: boolean;
@@ -56,15 +47,18 @@ const StyledButton = styled(Button)<{
 		props.active
 			? props.theme.colors.selectedTheme.tab.background.active
 			: props.theme.colors.selectedTheme.tab.background.inactive};
+
 	p {
 		margin: 0;
 		font-size: 13px;
 		text-align: left;
 	}
+
 	.title-container {
 		display: flex;
 		flex-direction: row;
 	}
+
 	.title {
 		text-align: center;
 		color: ${(props) =>
@@ -108,9 +102,11 @@ const StyledButton = styled(Button)<{
 
 	&:disabled {
 		background-color: transparent;
+
 		p {
 			color: ${(props) => props.theme.colors.selectedTheme.button.tab.disabled.text};
 		}
+
 		svg {
 			path {
 				fill: ${(props) => props.theme.colors.selectedTheme.button.tab.disabled.text};

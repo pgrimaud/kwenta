@@ -120,7 +120,7 @@ export const fundingRatesState = atom<FundingRateResponse[]>({
 	default: [],
 });
 
-export const pastRatesState = atom<Price[] | []>({
+export const pastRatesState = atom<Price[]>({
 	key: getFuturesKey('pastRates'),
 	default: [],
 });

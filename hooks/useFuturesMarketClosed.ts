@@ -9,20 +9,10 @@ export type MarketClosure = ReturnType<typeof useFuturesMarketClosed>;
 const useFuturesMarketClosed = (marketKey: FuturesMarketKey | null) => {
 	const futuresMarketSuspendedQuery = useFuturesSuspensionQuery(marketKey);
 
-	const isFuturesMarketClosed =
-		futuresMarketSuspendedQuery.isSuccess && futuresMarketSuspendedQuery.data
-			? futuresMarketSuspendedQuery.data.isFuturesMarketClosed
-			: null;
+	const isFuturesMarketClosed = futuresMarketSuspendedQuery?.data?.isFuturesMarketClosed ?? null;
+	const reason = futuresMarketSuspendedQuery?.data?.futuresClosureReason ?? null;
 
-	const reason =
-		futuresMarketSuspendedQuery.isSuccess && futuresMarketSuspendedQuery.data
-			? futuresMarketSuspendedQuery.data.futuresClosureReason
-			: null;
-
-	return {
-		isFuturesMarketClosed,
-		futuresClosureReason: reason as FuturesClosureReason,
-	};
+	return { isFuturesMarketClosed, futuresClosureReason: reason as FuturesClosureReason };
 };
 
 export default useFuturesMarketClosed;
