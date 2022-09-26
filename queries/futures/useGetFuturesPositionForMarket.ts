@@ -51,6 +51,9 @@ const useGetFuturesPositionForMarket = (options?: UseQueryOptions<FuturesPositio
 				MarketAssetByKey[market]
 			);
 
+			// eslint-disable-next-line
+			console.log('fetched position', position);
+
 			setPosition(position);
 
 			return position;
