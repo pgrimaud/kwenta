@@ -52,16 +52,16 @@ export default function useQueryCrossMarginAccount() {
 			? storedCrossMarginAccounts[crossMarginContractFactory?.address]?.[walletAddress]
 			: null;
 
-		if (existing) {
-			setFuturesAccount({
-				...futuresAccount,
-				status: 'complete',
-				crossMarginAddress: existing,
-				crossMarginAvailable: true,
-				walletAddress,
-			});
-			return existing;
-		}
+		// if (existing) {
+		// 	setFuturesAccount({
+		// 		...futuresAccount,
+		// 		status: 'complete',
+		// 		crossMarginAddress: existing,
+		// 		crossMarginAvailable: true,
+		// 		walletAddress,
+		// 	});
+		// 	return existing;
+		// }
 
 		setFuturesAccount({
 			...futuresAccount,
@@ -84,7 +84,7 @@ export default function useQueryCrossMarginAccount() {
 			{ owner: walletAddress }
 		);
 
-		const crossMarginAccount = response?.crossMarginAccounts[0]?.id || null;
+		const crossMarginAccount = response?.crossMarginAccounts[1]?.id || null;
 
 		const existingAccounts = crossMarginContractFactory
 			? storedCrossMarginAccounts[crossMarginContractFactory.address]
