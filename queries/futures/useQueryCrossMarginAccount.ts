@@ -84,8 +84,7 @@ export default function useQueryCrossMarginAccount() {
 			{ owner: walletAddress }
 		);
 
-		const crossMarginAccount =
-			response?.crossMarginAccounts[response.crossMarginAccounts.length - 1]?.id || null;
+		const crossMarginAccount = response?.crossMarginAccounts[2]?.id || null;
 
 		const existingAccounts = crossMarginContractFactory
 			? storedCrossMarginAccounts[crossMarginContractFactory.address]
