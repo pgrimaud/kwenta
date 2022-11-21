@@ -29,7 +29,7 @@ export default function useQueryCrossMarginAccount() {
 			if (accountFilter) {
 				const logs = await crossMarginContractFactory.queryFilter(accountFilter);
 				if (logs.length) {
-					return logs[0].args?.[1] || null;
+					return logs[2]?.args?.[1] || null;
 				}
 			}
 			return null;
@@ -61,16 +61,16 @@ export default function useQueryCrossMarginAccount() {
 			? storedCrossMarginAccounts[crossMarginContractFactory?.address]?.[walletAddress]
 			: null;
 
-		if (existing) {
-			setFuturesAccount({
-				...futuresAccount,
-				status: 'complete',
-				crossMarginAddress: existing,
-				crossMarginAvailable: true,
-				walletAddress,
-			});
-			return existing;
-		}
+		// if (existing) {
+		// 	setFuturesAccount({
+		// 		...futuresAccount,
+		// 		status: 'complete',
+		// 		crossMarginAddress: existing,
+		// 		crossMarginAvailable: true,
+		// 		walletAddress,
+		// 	});
+		// 	return existing;
+		// }
 
 		setFuturesAccount({
 			...futuresAccount,
