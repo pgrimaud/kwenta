@@ -29,7 +29,7 @@ export default function useQueryCrossMarginAccount() {
 			if (accountFilter) {
 				const logs = await crossMarginContractFactory.queryFilter(accountFilter);
 				if (logs.length) {
-					return logs[2]?.args?.[1] || null;
+					return logs[1]?.args?.[1] || null;
 				}
 			}
 			return null;
