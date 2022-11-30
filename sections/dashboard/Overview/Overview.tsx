@@ -9,7 +9,13 @@ import FuturesIcon from 'components/Nav/FuturesIcon';
 import { TabPanel } from 'components/Tab';
 import { FuturesAccountTypes } from 'queries/futures/types';
 import { CompetitionBanner } from 'sections/shared/components/CompetitionBanner';
-import { balancesState, portfolioState, positionsState } from 'store/futures';
+import {
+	selectCrossMarginPositions,
+	selectFuturesPortfolio,
+	selectIsolatedMarginPositions,
+} from 'state/futures/selectors';
+import { useAppSelector } from 'state/hooks';
+import { balancesState } from 'store/futures';
 import { activePositionsTabState } from 'store/ui';
 import { formatDollars } from 'utils/formatters/number';
 
@@ -31,8 +37,9 @@ const Overview: FC = () => {
 	const { t } = useTranslation();
 
 	const balances = useRecoilValue(balancesState);
-	const portfolio = useRecoilValue(portfolioState);
-	const positions = useRecoilValue(positionsState);
+	const portfolio = useAppSelector(selectFuturesPortfolio);
+	const crossPositions = useAppSelector(selectCrossMarginPositions);
+	const isolatedPositions = useAppSelector(selectIsolatedMarginPositions);
 
 	const [activePositionsTab, setActivePositionsTab] = useRecoilState<PositionsTab>(
 		activePositionsTabState
@@ -40,13 +47,11 @@ const Overview: FC = () => {
 	const [activeMarketsTab, setActiveMarketsTab] = useState<MarketsTab>(MarketsTab.FUTURES);
 
 	const POSITIONS_TABS = useMemo(() => {
-		const crossPositions = positions.cross_margin.filter(({ position }) => !!position).length;
-		const isolatedPositions = positions.isolated_margin.filter(({ position }) => !!position).length;
 		return [
 			{
 				name: PositionsTab.CROSS_MARGIN,
 				label: t('dashboard.overview.positions-tabs.cross-margin'),
-				badge: crossPositions,
+				badge: crossPositions.length,
 				titleIcon: <FuturesIcon type="cross_margin" />,
 				active: activePositionsTab === PositionsTab.CROSS_MARGIN,
 				detail: formatDollars(portfolio.crossMarginFutures),
@@ -56,7 +61,7 @@ const Overview: FC = () => {
 			{
 				name: PositionsTab.ISOLATED_MARGIN,
 				label: t('dashboard.overview.positions-tabs.isolated-margin'),
-				badge: isolatedPositions,
+				badge: isolatedPositions.length,
 				active: activePositionsTab === PositionsTab.ISOLATED_MARGIN,
 				titleIcon: <FuturesIcon type="isolated_margin" />,
 				detail: formatDollars(portfolio.isolatedMarginFutures),
@@ -72,7 +77,15 @@ const Overview: FC = () => {
 				onClick: () => setActivePositionsTab(PositionsTab.SPOT),
 			},
 		];
-	}, [positions, balances, activePositionsTab, setActivePositionsTab, t, portfolio]);
+	}, [
+		crossPositions,
+		isolatedPositions,
+		balances,
+		activePositionsTab,
+		setActivePositionsTab,
+		t,
+		portfolio,
+	]);
 
 	const MARKETS_TABS = useMemo(
 		() => [

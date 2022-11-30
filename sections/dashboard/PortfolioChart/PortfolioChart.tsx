@@ -4,10 +4,12 @@ import styled from 'styled-components';
 
 import Currency from 'components/Currency';
 import { MobileHiddenView, MobileOnlyView } from 'components/Media';
-import { balancesState, portfolioState } from 'store/futures';
+import { selectFuturesPortfolio } from 'state/futures/selectors';
+import { useAppSelector } from 'state/hooks';
+import { balancesState } from 'store/futures';
 
 const PortfolioChart: FC = () => {
-	const portfolio = useRecoilValue(portfolioState);
+	const portfolio = useAppSelector(selectFuturesPortfolio);
 	const balances = useRecoilValue(balancesState);
 
 	const total = useMemo(() => portfolio.total.add(balances.totalUSDBalance), [portfolio, balances]);
